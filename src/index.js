@@ -11,14 +11,27 @@ function getData(currency, amount) {
   let request = ExchangeService.convert(currency, amount); 
   request.then( (result) => {
     if (result instanceof Error) {
-      return result.message; 
+      console.log(result);
+      printError(result);
     }
     else {
-      printData(result.conversion_result);
+      printData(result);
     }
   });
 }
 
+function parseInputAmount(amount) {
+  let inputAmount = {};
+  let parsedAmount = parseFloat(amount); 
+  if (!parsedAmount) {
+    inputAmount["valid"] = false;
+  }
+  else {
+    inputAmount["valid"] = true; 
+    inputAmount["amount"] = parsedAmount;
+  }
+  return inputAmount;
+}
 
 
 //UI Logic------------------------------------------------------------------------
@@ -35,5 +48,9 @@ function handleSubmit(event) {
 }
 
 function printData(data) {
-  document.getElementById("display").innerText = data;  
+  document.getElementById("display").innerText = data.conversion_result; 
+}
+
+function printError(error) {
+  document.getElementById("display").innerText = `There was an error ${error.message} oh no!`;
 }
