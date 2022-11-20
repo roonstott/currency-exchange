@@ -1,23 +1,19 @@
 // import 'bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-// import './css/styles.css';
-// import Codes from './code-index.js';
+import './css/styles.css';
+import Codes from './code-index.js';
 import ExchangeService from './services/exchange-service.js';
 
 
 //Business Logic ------------------------------------------------------------------
 
-function getData(currency, amount) {
-  let request = ExchangeService.convert(currency, amount); 
-  request.then( (result) => {
-    if (result instanceof Error) {
-      console.log(result);
-      printError(result);
-    }
-    else {
-      printData(result, currency, amount);
-    }
-  });
+async function getData(currency, amount) {
+  let request = await ExchangeService.convert(currency[0], amount);
+  if (request instanceof Error) {
+    printError(request);
+  } else {
+    printData(request, currency, amount);
+  }
 }
 
 function parseInputAmount(amount) {
@@ -30,19 +26,26 @@ function parseInputAmount(amount) {
   }
 }
 
-function errorScreen(amount) {
+function errorScreenAmount(amount) {
   let parsedAmount = parseInputAmount(amount);
   if (!parsedAmount) {
-    printUserNumberError();
+    printUserNumberError(amount);
     return false;
   } else {
     return true;
   }
 }
 
-// function parseCountryInput(currency) {
-
-// }
+function errorScreenCode(code) {
+  const cleanCode = code.trim().toUpperCase();
+  let checkedCode = Codes.checkCurrency(cleanCode); 
+  if (checkedCode) {
+    return checkedCode; 
+  } else {
+    printUserCodeError(cleanCode);
+    return false; 
+  }
+}
 
 
 //UI Logic------------------------------------------------------------------------
@@ -60,20 +63,25 @@ function handleSubmit(event) {
   const amount = document.getElementById("amount").value;
   document.getElementById("currency").value = null;
   document.getElementById("amount").value = null;
-  let screen = errorScreen(amount);
-  if (screen) {
-    getData(currency, amount);
+  let screenedAmount = errorScreenAmount(amount);
+  let screenedCode = errorScreenCode(currency);
+  if (screenedAmount && screenedCode) {
+    getData(screenedCode, amount);
   }
 }
 
 function printData(data, currency, amount) {
-  document.getElementById("display").innerText = `$${amount} US Dollars is equal to ${data.conversion_result} in ${currency}. The exchange rate was ${data.conversion_rate} ${currency} per US Dollar as of ${data.time_last_update_utc}.`;
+  document.getElementById("display").innerText = `$${amount} US Dollars is equal to ${currency[0]} ${data.conversion_result} ${currency[1]}. The exchange rate was ${data.conversion_rate} ${currency[1]} per US Dollar as of ${data.time_last_update_utc}.`;
 }
 
 function printError(error) {
-  document.getElementById("display").innerText = `There was an error ${error.message} oh no!`;
+  document.getElementById("display").innerText = error.message;
 }
 
-function printUserNumberError() {
-  document.getElementById("number-error").innerText = "Please enter a valid number"; 
+function printUserNumberError(input) {
+  document.getElementById("number-error").innerText = `You entered ${input}, which is not recognized as a valid number.`; 
+}
+
+function printUserCodeError(input) {
+  document.getElementById("number-error").innerText = `You entered ${input}, which is not a recognized country code. Please refer to the link for a list of supported country codes.`;
 }

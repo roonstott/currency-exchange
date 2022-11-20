@@ -1,16 +1,17 @@
 export default class ExchangeService {
-  static convert(countryCode, amount) {
+  static async convert(countryCode, amount) {
     let url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/pair/USD/${countryCode}/${amount}`;
-    return fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("There was an error");
-        } else {
-          return response.json();
-        }
-      })
-      .catch((error) => {
-        return error;
-      });
+    let response = await fetch(url);
+    let data = await response.json();
+    try {
+      if (!response.ok || !response) {
+        const errorMessage = `There was an error. Status: ${response.status} Error Type: ${data["error-type"]}`;
+        throw new Error(errorMessage);
+      } else {
+        return data;
+      }
+    } catch (error) {
+      return error;
+    }
   }
 }
