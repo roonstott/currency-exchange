@@ -1,5 +1,5 @@
-// import 'bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Codes from './code-index.js';
 import ExchangeService from './services/exchange-service.js';
@@ -16,18 +16,8 @@ async function getData(currency, amount) {
   }
 }
 
-function parseInputAmount(amount) {
-  let parsedAmount = parseFloat(amount); 
-  if (!parsedAmount) {
-    return false;
-  }
-  else {
-    return true;
-  }
-}
-
 function errorScreenAmount(amount) {
-  let parsedAmount = parseInputAmount(amount);
+  let parsedAmount = parseFloat(amount);
   if (!parsedAmount) {
     printUserNumberError(amount);
     return false;
@@ -71,7 +61,7 @@ function handleSubmit(event) {
 }
 
 function printData(data, currency, amount) {
-  document.getElementById("display").innerText = `$${amount} US Dollars is equal to ${currency[0]} ${data.conversion_result} ${currency[1]}. The exchange rate was ${data.conversion_rate} ${currency[1]} per US Dollar as of ${data.time_last_update_utc}.`;
+  document.getElementById("display").innerText = `$${amount} US Dollars is equal to ${currency[0]} ${data.conversion_result} ${currency[1]}. The exchange rate was ${data.conversion_rate} ${currency[1]} per 1 US Dollar on ${data.time_last_update_utc}.`;
 }
 
 function printError(error) {
@@ -79,9 +69,9 @@ function printError(error) {
 }
 
 function printUserNumberError(input) {
-  document.getElementById("number-error").innerText = `You entered ${input}, which is not recognized as a valid number.`; 
+  document.getElementById("number-error").innerText = `You entered "${input}" which is not recognized as a valid number.`; 
 }
 
 function printUserCodeError(input) {
-  document.getElementById("number-error").innerText = `You entered ${input}, which is not a recognized country code. Please refer to the link for a list of supported country codes.`;
+  document.getElementById("number-error").innerText = `You entered "${input}" which is not a recognized country code. Please refer to the link for a list of supported country codes.`;
 }
