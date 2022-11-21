@@ -46,9 +46,9 @@ window.addEventListener("load", () => {
 
 function handleSubmit(event) {
   event.preventDefault();
-  document.getElementById("display").innerText = null; 
-  document.getElementById("number-error").innerText = null;
-  document.getElementById("currency-error").innerText = null;  
+  document.getElementById("display-1").innerText = null; 
+  document.getElementById("display-2").innerText = null;
+  document.getElementById("display-3").innerText = null;  
   const currency = document.getElementById("currency").value;
   const amount = document.getElementById("amount").value;
   document.getElementById("currency").value = null;
@@ -61,17 +61,21 @@ function handleSubmit(event) {
 }
 
 function printData(data, currency, amount) {
-  document.getElementById("display").innerText = `$${amount} US Dollars is equal to ${currency[0]} ${data.conversion_result} ${currency[1]}. The exchange rate was ${data.conversion_rate} ${currency[1]} per 1 US Dollar on ${data.time_last_update_utc}.`;
+  document.getElementById("display-1").innerText = `$${amount} US Dollars is equal to ${data.conversion_result} ${currency[1]} (${currency[0]}).`;
+
+  document.getElementById("display-2").innerText = `The exchange rate is ${data.conversion_rate} ${currency[1]} per 1 US Dollar`;
+
+  document.getElementById("display-3").innerText = `Last updated: ${data.time_last_update_utc}.`;
 }
 
 function printError(error) {
-  document.getElementById("display").innerText = error.message;
+  document.getElementById("display-1").innerText = error.message;
 }
 
 function printUserNumberError(input) {
-  document.getElementById("number-error").innerText = `You entered "${input}" which is not recognized as a valid number.`; 
+  document.getElementById("display-1").innerText = `You entered "${input}" which is not recognized as a valid number.`; 
 }
 
 function printUserCodeError(input) {
-  document.getElementById("number-error").innerText = `You entered "${input}" which is not a recognized country code. Please refer to the link for a list of supported country codes.`;
+  document.getElementById("display-1").innerText = `You entered "${input}" which is not a recognized country code. Please refer to the link for a list of supported country codes.`;
 }

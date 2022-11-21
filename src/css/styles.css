@@ -1,0 +1,16 @@
+body {
+  background-color: antiquewhite;
+}
+
+.jumbotron {
+  margin-top: 12%;
+}
+
+.card {
+  margin-bottom: 12%;
+  padding-top: 5%;
+}
+
+#display-1 {
+  font-size: 20px;
+}
