@@ -25,7 +25,7 @@ _This program allows a user to specify the amount of US Dollars that they would 
   `$ npm run build`
 * _Create a .env file in the root directory_
   `$ touch .env`
-* _Go to the ExchangeRate API webpage https://www.exchangerate-api.com/ _
+* _Go to the ExchangeRate API webpage https://www.exchangerate-api.com/_
 * _Click the 'Get Free Key' button on the top right corner of the page_
 * _Follow the instructions to create an account and generate a free key._
 * _Go to the .env file and enter: 'API_KEY= {your API key}' without any spaces or other characters_
